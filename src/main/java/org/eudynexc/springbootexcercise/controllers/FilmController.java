@@ -55,17 +55,17 @@ public class FilmController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteById(@RequestParam int id) {
+  public ResponseEntity<Void> deleteById(@PathVariable int id) {
     filmService.deleteFilmById(id);
     return ResponseEntity.noContent().build();
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<FilmDto> updateFilm(@RequestParam int id, @Valid @RequestBody FilmDto filmDto) {
+  public ResponseEntity<FilmDto> updateFilm(@PathVariable int id, @Valid @RequestBody FilmDto filmDto) {
     return ResponseEntity.ok(filmService.updateFilm(id, filmDto));
   }
 
-  @GetMapping("/rental-braket")
+  @GetMapping("/rental-bracket")
   public ResponseEntity<Page<FilmDto>> filmPriceBracket(
           @RequestParam BigDecimal low,
           @RequestParam BigDecimal high,
@@ -82,14 +82,14 @@ public class FilmController {
 
   @GetMapping("/search")
   public ResponseEntity<Page<FilmDocument>> search(
-          @RequestParam(required = false) String title,
+          @RequestParam(required = false) String q,
           @RequestParam(required = false) String language,
           @RequestParam(required = false) String priceBracket,
           @RequestParam(required = false) String lengthBracket,
           @RequestParam(required = false) List<String> rating,
           Pageable pageable) {
     return ResponseEntity.ok(
-            filmSearchService.search(title, language, priceBracket, lengthBracket, rating, pageable));
+            filmSearchService.search(q, language, priceBracket, lengthBracket, rating, pageable));
   }
 
   @GetMapping("/autocomplete")
